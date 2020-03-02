@@ -1,0 +1,23 @@
+{
+    "name": "farmbot-weather-interface",
+    "version": "1.0.0",
+    "description": "A weather interface to display data from Farmbot sensors and data retrived from a weather API",
+    "main": "index.js",
+    "scripts": {
+        "start": "nodemon"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/pcancoin/Farmbot-Weather-Interface.git"
+    },
+    "author": "Pablo Cancoin",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/pcancoin/Farmbot-Weather-Interface/issues"
+    },
+    "homepage": "https://github.com/pcancoin/Farmbot-Weather-Interface#readme",
+    "dependencies": {
+        "axios": "^0.19.2",
+        "express": "^4.17.1"
+    }
+}
