@@ -13,7 +13,7 @@ Number.prototype.clamp = function(min, max) {
 };
 
 router.get("/darksky", (req, res) => {
-    darkskyAPI.get("/48.1214379,-1.635091?lang=fr").then(result => {
+    darkskyAPI.get("/48.1214379,-1.635091?lang=fr&units=si").then(result => {
         //Keep only the 25 last hourly data
         let hourlyData = result.data.hourly.data.splice(0, 25);
 
@@ -56,11 +56,12 @@ router.get("/darksky", (req, res) => {
             icon: result.data.currently.icon,
             summary: result.data.currently.summary,
             prevSummary: result.data.hourly.summary,
+            temp: result.data.currently.temperature,
             precipitation: {
                 labels,
                 datasets: [
                     {
-                        label: "Précipitation",
+                        label: "Précipitation (mm/h)",
                         backgroundColor: probaSet,
                         data: intensitySet
                     }
