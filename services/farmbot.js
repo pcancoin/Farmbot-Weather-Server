@@ -3,7 +3,7 @@ const axios = require("axios"),
 
 module.exports = axios.create({
     baseURL: "https://my.farm.bot/api",
-    timeout: 1000,
+    timeout: 2000,
     headers: {
         Authorization: config.farmbotToken
     }

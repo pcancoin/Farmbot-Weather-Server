@@ -3,5 +3,5 @@ const axios = require("axios"),
 
 module.exports = axios.create({
     baseURL: "https://api.darksky.net/forecast/" + config.darkskyKey,
-    timeout: 1000
+    timeout: 2000
 });
