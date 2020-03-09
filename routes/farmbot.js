@@ -2,6 +2,22 @@ const express = require("express"),
     router = express.Router(),
     farmbotAPI = require("../services/farmbot");
 
+Date.prototype.getLabel = function() {
+    return (
+        this.getDate()
+            .toString()
+            .padStart(2, "0") +
+        "/" +
+        (this.getMonth() + 1).toString().padStart(2, "0") +
+        " : " +
+        this.getHours() +
+        "h" +
+        this.getMinutes()
+            .toString()
+            .padStart(2, "0")
+    );
+};
+
 router.get("/farmbot", (req, res) => {
     farmbotAPI
         .get("/sensor_readings")
@@ -17,27 +33,10 @@ router.get("/farmbot", (req, res) => {
                 })
                 //Garder uniquement les valeurs utiles (valeur et date de lecture) et mettre en forme la date
                 .reduce((acc, val) => {
-                    date = new Date(val.read_at);
-
-                    date =
-                        date
-                            .getDate()
-                            .toString()
-                            .padStart(2, "0") +
-                        "/" +
-                        (date.getMonth() + 1).toString().padStart(2, "0") +
-                        "/" +
-                        date.getFullYear() +
-                        " : " +
-                        date.getHours() +
-                        "h" +
-                        date
-                            .getMinutes()
-                            .toString()
-                            .padStart(2, "0");
+                    let date = new Date(val.read_at);
 
                     acc.push({
-                        date,
+                        date: date.getLabel(),
                         value: Math.floor(((1023 - val.value) * 100) / 1023)
                     });
 
@@ -49,7 +48,8 @@ router.get("/farmbot", (req, res) => {
             res.json(soilReadings);
         })
         .catch(err => {
-            console.log(err);
+            console.log("Farmbot", err);
+            res.send("err farmbot");
         });
 });
 
