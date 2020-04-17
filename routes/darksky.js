@@ -41,7 +41,7 @@ router.get("/darksky", (req, res) => {
         })
         .catch(err => {
             console.log("/darksky error : ", err);
-            res.statusCode = 404;
+            res.status(500);
             res.json({
                 error:
                     "Erreur lors de la requête, veuillez contacter un administrateur"
@@ -90,7 +90,7 @@ router.get("/darksky/precipitation", (req, res) => {
         })
         .catch(err => {
             console.log("/darksky/precipitation error : ", err);
-            res.statusCode = 404;
+            res.status(500);
             res.json({
                 error:
                     "Erreur lors de la requête, veuillez contacter un administrateur"

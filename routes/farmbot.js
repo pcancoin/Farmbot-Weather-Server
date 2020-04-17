@@ -49,7 +49,11 @@ router.get("/farmbot", (req, res) => {
         })
         .catch(err => {
             console.log("Farmbot", err);
-            res.send("err farmbot");
+            res.status(500);
+            res.json({
+                error:
+                    "Erreur lors de la requête vers Farmbot, veuillez contacter un administrateur"
+            });
         });
 });
 
