@@ -1,30 +1,25 @@
 const express = require("express"),
     router = express.Router(),
-    darkskyAPI = require("../services/darksky"),
-    path = require("path");
+    darkskyAPI = require("../services/darksky");
 
 /**
  * Clamp the number between min and max values
  * @param min Minimum value of the number
  * @param max Maximum value of the number
  */
-Number.prototype.clamp = function(min, max) {
+Number.prototype.clamp = function (min, max) {
     return Math.min(Math.max(this, min), max);
 };
 
-Date.prototype.getLabel = function() {
+Date.prototype.getLabel = function () {
     return (
-        this.getDate()
-            .toString()
-            .padStart(2, "0") +
+        this.getDate().toString().padStart(2, "0") +
         "/" +
         (this.getMonth() + 1).toString().padStart(2, "0") +
         " : " +
         this.getHours() +
         "h" +
-        this.getMinutes()
-            .toString()
-            .padStart(2, "0")
+        this.getMinutes().toString().padStart(2, "0")
     );
 };
 
@@ -36,7 +31,7 @@ router.get("/darksky", (req, res) => {
                 icon: result.data.currently.icon,
                 summary: result.data.currently.summary,
                 prevSummary: result.data.hourly.summary,
-                temp: result.data.currently.temperature
+                temp: result.data.currently.temperature,
             });
         })
         .catch(err => {
@@ -44,7 +39,7 @@ router.get("/darksky", (req, res) => {
             res.status(500);
             res.json({
                 error:
-                    "Erreur lors de la requête, veuillez contacter un administrateur"
+                    "Erreur lors de la requête, veuillez contacter un administrateur",
             });
         });
 });
@@ -60,9 +55,9 @@ router.get("/darksky/precipitation", (req, res) => {
                     {
                         label: "Précipitation (mm/h)",
                         backgroundColor: [],
-                        data: []
-                    }
-                ]
+                        data: [],
+                    },
+                ],
             };
 
             precipitation = result.data.hourly.data
@@ -93,7 +88,7 @@ router.get("/darksky/precipitation", (req, res) => {
             res.status(500);
             res.json({
                 error:
-                    "Erreur lors de la requête, veuillez contacter un administrateur"
+                    "Erreur lors de la requête, veuillez contacter un administrateur",
             });
         });
 });

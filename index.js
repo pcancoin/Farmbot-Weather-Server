@@ -1,12 +1,15 @@
 const express = require("express"),
     app = express(),
-    path = require("path"),
-    axios = require("axios");
+    path = require("path");
 
-const darkskyRoutes = require("./routes/darksky"),
+require("./services/passport");
+
+const authRoutes = require("./routes/authRoutes"),
+    darkskyRoutes = require("./routes/darksky"),
     farmbotRoutes = require("./routes/farmbot");
 
 app.use("/assets", express.static(path.join(__dirname, "public")));
+app.use("/auth", authRoutes);
 app.use("/api", darkskyRoutes);
 app.use("/api", farmbotRoutes);
 
