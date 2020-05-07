@@ -23,7 +23,7 @@ Date.prototype.getLabel = function () {
     );
 };
 
-router.get("/darksky", (req, res) => {
+router.get("/", (req, res) => {
     darkskyAPI
         .get("/48.1214379,-1.635091?lang=fr&units=si")
         .then(result => {
@@ -44,7 +44,7 @@ router.get("/darksky", (req, res) => {
         });
 });
 
-router.get("/darksky/precipitation", (req, res) => {
+router.get("/precipitation", (req, res) => {
     darkskyAPI
         .get("/48.1214379,-1.635091?lang=fr&units=si")
         .then(result => {

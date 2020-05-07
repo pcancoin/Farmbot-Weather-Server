@@ -18,7 +18,7 @@ Date.prototype.getLabel = function() {
     );
 };
 
-router.get("/farmbot", (req, res) => {
+router.get("/", (req, res) => {
     farmbotAPI
         .get("/sensor_readings")
         .then(({ data }) => {
