@@ -3,12 +3,16 @@ const express = require("express"),
     darkskyAPI = require("../services/darksky");
 
 /**
- * Clamp the number between min and max values
- * @param min Minimum value of the number
- * @param max Maximum value of the number
+ * Mapper la nombre d'une intervalle à une autre
+ * @param in_min Min intervalle de départ
+ * @param in_max Max intervalle de départ
+ * @param out_min Min intervalle d'arrivée
+ * @param out_min Max intervalle d'arrivée
  */
-Number.prototype.clamp = function (min, max) {
-    return Math.min(Math.max(this, min), max);
+Number.prototype.map = function (in_min, in_max, out_min, out_max) {
+    return (
+        ((this - in_min) * (out_max - out_min)) / (in_max - in_min) + out_min
+    );
 };
 
 Date.prototype.getLabel = function () {
@@ -23,74 +27,72 @@ Date.prototype.getLabel = function () {
     );
 };
 
-router.get("/", (req, res) => {
-    darkskyAPI
-        .get("/48.1214379,-1.635091?lang=fr&units=si")
-        .then(result => {
-            res.json({
-                icon: result.data.currently.icon,
-                summary: result.data.currently.summary,
-                prevSummary: result.data.hourly.summary,
-                temp: result.data.currently.temperature,
-            });
-        })
-        .catch(err => {
-            console.log("/darksky error : ", err);
-            res.status(500);
-            res.json({
-                error:
-                    "Erreur lors de la requête, veuillez contacter un administrateur",
-            });
+router.get("/", async (req, res) => {
+    try {
+        let data = await darkskyAPI.getAllForecast();
+        res.json({
+            icon: data.currently.icon,
+            summary: data.currently.summary,
+            prevSummary: data.hourly.summary,
+            temp: data.currently.temperature,
         });
+    } catch (err) {
+        console.log("/darksky error : ", err);
+        res.status(500);
+        res.json({
+            error:
+                "Erreur lors de la requête, veuillez contacter un administrateur",
+        });
+    }
 });
 
-router.get("/precipitation", (req, res) => {
-    darkskyAPI
-        .get("/48.1214379,-1.635091?lang=fr&units=si")
-        .then(result => {
-            //Objet vide a remplir par les donnees de precipitation
-            var precipitation = {
-                labels: [],
-                datasets: [
-                    {
-                        label: "Précipitation (mm/h)",
-                        backgroundColor: [],
-                        data: [],
-                    },
-                ],
-            };
+router.get("/precipitation", async (req, res) => {
+    try {
+        let data = await darkskyAPI.getAllForecast();
 
-            precipitation = result.data.hourly.data
-                .splice(0, 24) //Garder seulement les 24 prochaines heures
-                .reduce((acc, val) => {
-                    //Générer le label et l'ajouter au tableau des labels
-                    var d = new Date(0);
-                    d.setUTCSeconds(val.time);
-                    acc.labels.push(d.getLabel());
+        var precipitation = {
+            labels: [],
+            datasets: [
+                {
+                    label: "Précipitation (mm/h)",
+                    backgroundColor: [],
+                    data: [],
+                },
+            ],
+        };
 
-                    //Ajout de la couleur (en fonction de l'intensité)
-                    acc.datasets[0].backgroundColor.push(
-                        `rgba(20, 80, 120, ${val.precipProbability.clamp(
-                            0,
-                            1
-                        )})`
-                    );
+        precipitation = data.hourly.data
+            .splice(0, 24) //Garder seulement les 24 prochaines heures
+            .reduce((acc, val) => {
+                //Générer le label et l'ajouter au tableau des labels
+                var d = new Date(0);
+                d.setUTCSeconds(val.time);
+                acc.labels.push(d.getLabel());
 
-                    //Ajout de la quantité de pluie prévue
-                    acc.datasets[0].data.push(val.precipIntensity);
+                //Ajout de la couleur (en fonction de l'intensité)
+                acc.datasets[0].backgroundColor.push(
+                    `rgba(20, 80, 120, ${val.precipProbability.map(
+                        0,
+                        1,
+                        0.2,
+                        1
+                    )})`
+                );
 
-                    return acc;
-                }, precipitation);
-            res.json(precipitation);
-        })
-        .catch(err => {
-            console.log("/darksky/precipitation error : ", err);
-            res.status(500);
-            res.json({
-                error:
-                    "Erreur lors de la requête, veuillez contacter un administrateur",
-            });
+                //Ajout de la quantité de pluie prévue
+                acc.datasets[0].data.push(val.precipIntensity);
+
+                return acc;
+            }, precipitation);
+        res.json(precipitation);
+    } catch (err) {
+        console.log("/darksky/precipitation error : ", err);
+        res.status(500);
+        res.json({
+            error:
+                "Erreur lors de la requête, veuillez contacter un administrateur",
         });
+    }
 });
 
 module.exports = router;

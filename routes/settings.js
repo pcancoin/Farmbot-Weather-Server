@@ -1,16 +1,20 @@
 const express = require("express"),
     router = express.Router(),
     bodyParser = require("body-parser"),
-    Settings = require("../models/Settings"),
+    settingsService = require("../services/settings"),
     only = require("only");
 
 let jsonParser = bodyParser.json();
 
 router.get("/", async (req, res) => {
-    settings = await Settings.findOne({},  { '_id': 0 });
-    console.log(settings);
+    try {
+        let settings = await settingsService.getSettings();
+        console.log(settings);
 
-    res.send(settings);
+        res.send(settings);
+    } catch (err) {
+        res.status(400).json({ error: err.message });
+    }
 });
 
 router.post("/", jsonParser, async (req, res) => {
@@ -21,19 +25,14 @@ router.post("/", jsonParser, async (req, res) => {
         "toolID valvePin wateringThreshold weatherThreshold sensorPin"
     );
     console.log(reglages);
-    
+
     try {
-        settings = await Settings.findOneAndUpdate({}, reglages, { new: true });
-        console.log(settings);
-        res.send("ok");
-    } catch(e) {
-        console.log(e);
-        res.status(400).json({error: "Paramètres incorrects"});
-        
+        let nouveauReglages = await settingsService.setSettings(reglages);
+
+        res.send(nouveauReglages);
+    } catch (err) {
+        res.status(400).json({ error: err.message });
     }
-    
-    
-    
 });
 
 module.exports = router;
