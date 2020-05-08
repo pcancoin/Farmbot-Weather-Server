@@ -2,28 +2,22 @@ const express = require("express"),
     router = express.Router(),
     farmbotApi = require("../services/farmbotApi");
 
-Date.prototype.getLabel = function() {
+Date.prototype.getLabel = function () {
     return (
-        this.getDate()
-            .toString()
-            .padStart(2, "0") +
+        this.getDate().toString().padStart(2, "0") +
         "/" +
         (this.getMonth() + 1).toString().padStart(2, "0") +
         " : " +
         this.getHours() +
         "h" +
-        this.getMinutes()
-            .toString()
-            .padStart(2, "0")
+        this.getMinutes().toString().padStart(2, "0")
     );
 };
 
 router.get("/", async (req, res) => {
-    
     let data = await farmbotApi.getSensorReadings();
 
     soilReadings = data
-        .filter(reading => reading["pin"] === 59) //Garder uniquement les mesures du capteurs d'humidité
         .splice(0, 25) //Garder les 25 dernières mesures
         //Tri des valeurs par date croissante
         .sort((set1, set2) => {
@@ -37,7 +31,7 @@ router.get("/", async (req, res) => {
 
             acc.push({
                 date: date.getLabel(),
-                value: Math.floor(((1023 - val.value) * 100) / 1023)
+                value: Math.floor(((1023 - val.value) * 100) / 1023),
             });
 
             return acc;
@@ -48,7 +42,7 @@ router.get("/", async (req, res) => {
     res.json(soilReadings);
 });
 
-        /*
+/*
         .catch(err => {
             console.log("Farmbot", err);
             res.status(500);

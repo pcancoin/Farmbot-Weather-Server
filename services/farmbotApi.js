@@ -10,23 +10,28 @@ let farmbotAPI = axios.create({
 });
 
 const toExport = {
-    //renvoit toutes les données du capteur d'humidité
+    /**
+     * Renvoit toutes les données du capteur d'humidité
+     */
     getSensorReadings: async () => {
         let res = await farmbotAPI.get("/sensor_readings");
 
-        return res.data;
+        //Garder uniquement les mesures du capteurs d'humidité
+        let data = res.data.filter((reading) => reading["pin"] === 59);
+        return data;
     },
-    //renvoit la dernière donnée du capteur d'humidité
+
+    /**
+     * Renvoit la dernière donnée du capteur d'humidité
+     */
     getLastSensorReading: async () => {
         let data = await toExport.getSensorReadings();
-        let i = 1;
-        while (data[data.length - i].pin != 59) {
-            i++;
-        }
-        let valeur = data[data.length - i].value;
-        return valeur;
+        return data[data.length - 1].value;
     },
-    //renvoit le tableau avec toutes les plantes
+
+    /**
+     * Renvoit le tableau avec toutes les plantes
+     */
     plantArray: async () => {
         let tab = [];
         let res = await farmbotAPI.get("/points");
@@ -37,13 +42,19 @@ const toExport = {
         }
         return tab;
     },
-    //renvoit le tableau des séquences
+
+    /**
+     * Renvoit le tableau des séquences
+     */
     getSequences: async () => {
         let res = await farmbotAPI.get("/sequences");
         console.log(res.data);
         return res.data;
     },
-    //Renvoit la liste des outils
+
+    /**
+     * Renvoit la liste des outils
+     */
     getTools: async () => {
         let res = await farmbotAPI.get("/tools");
         console.log(res.data);
