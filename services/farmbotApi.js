@@ -5,41 +5,40 @@ let farmbotAPI = axios.create({
     baseURL: "https://my.farm.bot/api",
     timeout: 2000,
     headers: {
-        Authorization: config.farmbotToken
-    }
+        Authorization: config.farmbotToken,
+    },
 });
 
-module.exports = {
+const toExport = {
     //renvoit toutes les données du capteur d'humidité
     getSensorReadings: async () => {
         let res = await farmbotAPI.get("/sensor_readings");
-        console.log(typeof res);
-        
+
         return res.data;
     },
-    //renvoit la dernière donnée du capteur d'humidité (il faut encore lire le capteur avant)
+    //renvoit la dernière donnée du capteur d'humidité
     getLastSensorReading: async () => {
-        let res = await farmbotAPI.get("/sensor_readings");
+        let data = await toExport.getSensorReadings();
         let i = 1;
-        while(res.data[res.data.length-i].pin!=59){
-          i++;
+        while (data[data.length - i].pin != 59) {
+            i++;
         }
-        let valeur=res.data[res.data.length-i].value;
+        let valeur = data[data.length - i].value;
         return valeur;
     },
     //renvoit le tableau avec toutes les plantes
     plantArray: async () => {
         let tab = [];
         let res = await farmbotAPI.get("/points");
-        for(let i=0; i<res.data.length; i++){
-            if(res.data[i].pointer_type == 'Plant'){
+        for (let i = 0; i < res.data.length; i++) {
+            if (res.data[i].pointer_type == "Plant") {
                 tab.push(res.data[i]);
             }
         }
         return tab;
     },
     //renvoit le tableau des séquences
-    getSequences: async () =>{
+    getSequences: async () => {
         let res = await farmbotAPI.get("/sequences");
         console.log(res.data);
         return res.data;
@@ -49,15 +48,7 @@ module.exports = {
         let res = await farmbotAPI.get("/tools");
         console.log(res.data);
         return res.data;
+    },
+};
 
-  }
-    
-}
-
-/*module.exports =axios.create({
-    baseURL: "https://my.farm.bot/api",
-    timeout: 2000,
-    headers: {
-        Authorization: config.farmbotToken
-    }
-});*/
+module.exports = toExport;
