@@ -4,7 +4,8 @@
     "description": "A weather interface to display data from Farmbot sensors and data retrived from a weather API",
     "main": "index.js",
     "scripts": {
-        "start": "nodemon"
+        "start": "nodemon",
+        "arrose": "node testArrosage.js"
     },
     "repository": {
         "type": "git",
