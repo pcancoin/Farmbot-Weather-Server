@@ -1,3 +1,8 @@
-const config = require("../config");
+const config = require("../config"),
+    Farmbot = require("farmbot").Farmbot,
+    farmbot = new Farmbot({ token: config.farmbotToken });
 
-module.exports = null;
+
+module.exports = {
+    
+}
