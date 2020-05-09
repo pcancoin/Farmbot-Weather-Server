@@ -32,7 +32,7 @@ const authRoutes = require("./routes/authRoutes"),
     farmbotRoutes = require("./routes/farmbot"),
     settingsRoutes = require("./routes/settings");
 
-app.use("/assets", express.static(path.join(__dirname, "public")));
+app.use("/", express.static(path.join(__dirname, "client")));
 app.use("/api/auth", authRoutes);
 app.use("/api/darksky", darkskyRoutes);
 app.use("/api/farmbot", farmbotRoutes);
