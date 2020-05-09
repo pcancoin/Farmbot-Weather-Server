@@ -6,6 +6,8 @@ const express = require("express"),
     passport = require("passport"),
     cookieSession = require("cookie-session");
 
+console.log(process.env);
+
 mongoose
     .connect(config.mongodb, {
         useNewUrlParser: true,
