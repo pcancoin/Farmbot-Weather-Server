@@ -1,12 +1,10 @@
 const express = require("express"),
     app = express(),
+    config = require('./config'),
     path = require("path"),
     mongoose = require("mongoose"),
-    config = require("./config"),
     passport = require("passport"),
     cookieSession = require("cookie-session");
-
-console.log(process.env);
 
 mongoose
     .connect(config.mongodb, {
