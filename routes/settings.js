@@ -9,7 +9,6 @@ let jsonParser = bodyParser.json();
 router.get("/", async (req, res) => {
     try {
         let settings = await settingsService.getSettings();
-        console.log(settings);
 
         res.send(settings);
     } catch (err) {
@@ -22,9 +21,8 @@ router.post("/", jsonParser, async (req, res) => {
     console.log(req.body);
     reglages = only(
         reglages,
-        "toolID valvePin wateringThreshold weatherThreshold sensorPin"
+        "toolID valvePin wateringThreshold weatherThreshold sensorPin lat long"
     );
-    console.log(reglages);
 
     try {
         let nouveauReglages = await settingsService.setSettings(reglages);

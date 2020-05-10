@@ -37,8 +37,6 @@ router.get("/", async (req, res) => {
             return acc;
         }, []);
 
-    console.log(soilReadings);
-
     res.json(soilReadings);
 });
 

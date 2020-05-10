@@ -6,7 +6,9 @@ const settingsSchema = new Schema({
     sensorPin: Number,
     valvePin: Number,
     wateringThreshold: Number,
-    weatherThreshold: Number
+    weatherThreshold: Number,
+    lat: Number,
+    long: Number
 });
 
 module.exports = mongoose.model("Settings", settingsSchema);

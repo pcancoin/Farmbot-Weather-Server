@@ -37,10 +37,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/darksky", darkskyRoutes);
 app.use("/api/farmbot", farmbotRoutes);
 app.use("/api/settings", settingsRoutes);
-
-app.get("*", (req, res) => {
-    res.json("Nothing here");
-});
+app.use("*", express.static(path.join(__dirname, "client")));
 
 app.use(function (err, req, res, next) {
     console.error(err.stack);
