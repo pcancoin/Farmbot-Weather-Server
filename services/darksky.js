@@ -12,7 +12,7 @@ const toExport = {
      */
     getAllForecast: async () => {
         let res = await darkskyApi.get(
-            "https://api.darksky.net/forecast/83a42c27e8d21e20e138b4691e6aa8d3/42.3601,-71.0589"
+            "/48.1214379,-1.635091?lang=fr&units=si"
         );
 
         return res.data;
