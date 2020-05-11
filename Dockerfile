@@ -7,7 +7,8 @@ COPY . .
 
 RUN npm ci --only=production
 
-RUN cd client && \
+RUN mkdir client && \
+    cd client && \
     git clone --depth=1 https://github.com/pcancoin/Farmbot-Weather-Client.git && \
     cd Farmbot-Weather-Client && \
     npm ci --only=production && \
