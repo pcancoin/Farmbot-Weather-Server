@@ -26,6 +26,7 @@
         "express": "^4.17.1",
         "farmbot": "^10.0.0-rc2",
         "mongoose": "^5.9.10",
+        "mongoose-findorcreate": "^3.0.0",
         "only": "0.0.2",
         "passport": "^0.4.1",
         "passport-google-oauth20": "^2.0.0"

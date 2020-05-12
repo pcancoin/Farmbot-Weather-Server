@@ -1,10 +1,11 @@
 const express = require("express"),
     app = express(),
-    config = require('./config'),
+    config = require("./config"),
     path = require("path"),
     mongoose = require("mongoose"),
     passport = require("passport"),
-    cookieSession = require("cookie-session");
+    cookieSession = require("cookie-session"),
+    reglagesServices = require("./services/settings");
 
 mongoose
     .connect(config.mongodb, {
@@ -12,7 +13,10 @@ mongoose
         useUnifiedTopology: true,
         useFindAndModify: false,
     })
-    .then(() => console.log("Connected to MongoDB"));
+    .then(() => {
+        console.log("Connected to MongoDB");
+        reglagesServices.initSettings();
+    });
 
 require("./services/passport");
 
@@ -30,13 +34,15 @@ app.use(passport.session());
 const authRoutes = require("./routes/authRoutes"),
     darkskyRoutes = require("./routes/darksky"),
     farmbotRoutes = require("./routes/farmbot"),
-    settingsRoutes = require("./routes/settings");
+    settingsRoutes = require("./routes/settings"),
+    arrosageRoutes = require("./routes/arrosage");
 
 app.use("/", express.static(path.join(__dirname, "client")));
 app.use("/api/auth", authRoutes);
 app.use("/api/darksky", darkskyRoutes);
 app.use("/api/farmbot", farmbotRoutes);
 app.use("/api/settings", settingsRoutes);
+app.use("/api/arrosage", arrosageRoutes);
 app.use("*", express.static(path.join(__dirname, "client")));
 
 app.use(function (err, req, res, next) {
