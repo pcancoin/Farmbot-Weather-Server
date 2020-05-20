@@ -1,8 +1,7 @@
-const axios = require("axios"),
-    config = require("../config");
+const axios = require("axios");
 
 let darkskyApi = axios.create({
-    baseURL: "https://api.darksky.net/forecast/" + config.darkskyKey,
+    baseURL: "https://api.darksky.net/forecast/" + process.env.darkskyKey,
     timeout: 2000,
 });
 

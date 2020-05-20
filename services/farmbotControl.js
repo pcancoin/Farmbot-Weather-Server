@@ -1,18 +1,15 @@
 global.atob = require("atob");
 
-const config = require("../config"),
-    farmbotApi = require("../services/farmbotApi"),
+const farmbotApi = require("../services/farmbotApi"),
     Farmbot = require("farmbot").Farmbot,
-    farmbot = new Farmbot({ token: config.farmbotToken }),
-    axios = require("axios");
+    axios = require("axios"),
+    Token = require("../models/Token");
 
-const FARMBOT_STATE = {
-    farmbot: undefined,
-};
+let farmbot = undefined;
 
 const SERVER = process.env.serverUrl;
 
-const errorHandler = error => {
+const errorHandler = (error) => {
     console.log("=== ERROR ===");
     console.dir(error);
 };
@@ -25,12 +22,24 @@ const toExport = {
             let token = res.data.token.encoded;
             console.log(token);
 
-            FARMBOT_STATE.farmbot = new Farmbot({ token });
+            let tokenObjet = {
+                name: "Farmbot",
+                token: token,
+            };
 
-            FARMBOT_STATE.farmbot
-                .connect()
-                .then(() => console.log("Connecté au Farmbot !"));
+            let tokenStocke = await Token.findOne({ name: "Farmbot" });
 
+            if (tokenStocke === null) {
+                await Token.create(tokenObjet);
+                console.log("Token farmbot ajouté");
+            } else {
+                Token.findOneAndUpdate({ name: "Farmbot" }, tokenObjet);
+                console.log("Token mis à jour");
+            }
+
+            farmbot = new Farmbot({ token });
+
+            farmbot.connect().then(() => console.log("Connecté au Farmbot !"));
         } catch (error) {
             console.error("Erreur lors de la récupération du token", error);
         }
@@ -56,7 +65,7 @@ const toExport = {
      * Positionne le robot au-dessus de la ième plante
      * @param {numéro de la plante} i
      */
-    goToPlant: async i => {
+    goToPlant: async (i) => {
         var plantes = await farmbotApi.plantArray();
         var x = plantes[i].x;
         var y = plantes[i].y;
@@ -65,7 +74,7 @@ const toExport = {
     /**
      * Allume l'electrovanne pendant le temps (en ms) défini en paramètre
      */
-    water: time => {
+    water: (time) => {
         farmbot.writePin({ pin_number: 8, pin_mode: 0, pin_value: 1 });
         function stopWater() {
             farmbot.writePin({ pin_number: 8, pin_mode: 0, pin_value: 0 });

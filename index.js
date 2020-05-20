@@ -1,6 +1,5 @@
 const express = require("express"),
     app = express(),
-    config = require("./config"),
     path = require("path"),
     mongoose = require("mongoose"),
     passport = require("passport"),
@@ -9,7 +8,7 @@ const express = require("express"),
     farmbotControl = require("./services/farmbotControl");
 
 mongoose
-    .connect(config.mongodb, {
+    .connect(process.env.mongodb, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
         useFindAndModify: false,
@@ -19,7 +18,10 @@ mongoose
         reglagesServices.initSettings();
     });
 
-farmbotControl.retrieveTokenAndConnect(process.env.farmbotMail, process.env.farmbotPassword);
+farmbotControl.retrieveTokenAndConnect(
+    process.env.farmbotMail,
+    process.env.farmbotPassword
+);
 
 require("./services/passport");
 
@@ -27,7 +29,7 @@ require("./services/passport");
 app.use(
     cookieSession({
         maxAge: 30 * 24 * 60 * 60 * 1000,
-        keys: [config.cookieKey],
+        keys: [process.env.cookieKey],
     })
 );
 

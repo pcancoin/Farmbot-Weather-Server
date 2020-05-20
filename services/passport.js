@@ -1,6 +1,5 @@
 const passport = require("passport"),
     GoogleStrategy = require("passport-google-oauth20"),
-    config = require("../config"),
     User = require("../models/User");
 
 passport.serializeUser((user, done) => {
@@ -9,7 +8,7 @@ passport.serializeUser((user, done) => {
 });
 
 passport.deserializeUser((id, done) => {
-    User.findById(id).then(user => {
+    User.findById(id).then((user) => {
         done(null, user);
     });
 });
@@ -17,24 +16,29 @@ passport.deserializeUser((id, done) => {
 passport.use(
     new GoogleStrategy(
         {
-            clientID: config.googleClientID,
-            clientSecret: config.googleClientSecret,
+            clientID: process.env.googleClientID,
+            clientSecret: process.env.googleClientSecret,
             callbackURL: "/api/auth/google/callback",
         },
         async (accessToken, refreshToken, profile, done) => {
             //On verifie si l'utilisateur est deja enregistre
-            const existingUser = await User.findOne({ providerId: profile.id, provider: "Google" });
+            const existingUser = await User.findOne({
+                providerId: profile.id,
+                provider: "Google",
+            });
             console.log(profile);
-            
 
             //Si l'utilisateur n'existe pas deja
             if (!existingUser) {
                 //On le cree
-                const newUser = await User.create({ 
-                    providerId: profile.id, 
-                    provider: "Google", 
-                    name: profile.displayName, 
-                    email: profile.emails.length > 0 ?  profile.emails[0].value : "" 
+                const newUser = await User.create({
+                    providerId: profile.id,
+                    provider: "Google",
+                    name: profile.displayName,
+                    email:
+                        profile.emails.length > 0
+                            ? profile.emails[0].value
+                            : "",
                 });
 
                 console.log("Done adding ", newUser);

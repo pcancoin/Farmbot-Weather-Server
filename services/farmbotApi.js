@@ -1,12 +1,16 @@
 const axios = require("axios"),
-    config = require("../config");
+    Token = require("../models/Token");
 
-let farmbotAPI = axios.create({
-    baseURL: "https://my.farm.bot/api",
-    timeout: 2000,
-    headers: {
-        Authorization: config.farmbotToken,
-    },
+let farmbotAPI;
+
+Token.findOne({ name: "Farmbot" }).then((token) => {
+    farmbotAPI = axios.create({
+        baseURL: "https://my.farm.bot/api",
+        timeout: 2000,
+        headers: {
+            Authorization: token.token,
+        },
+    });
 });
 
 const toExport = {
