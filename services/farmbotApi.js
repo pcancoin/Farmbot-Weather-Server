@@ -1,19 +1,28 @@
 const axios = require("axios"),
     Token = require("../models/Token");
 
-let farmbotAPI;
+let farmbotAPI; 
 
-Token.findOne({ name: "Farmbot" }).then((token) => {
-    farmbotAPI = axios.create({
-        baseURL: "https://my.farm.bot/api",
-        timeout: 2000,
-        headers: {
-            Authorization: token.token,
-        },
-    });
-});
+const SERVER = process.env.serverUrl;
 
 const toExport = {
+    initToken: async (email, password) => {
+        const payload = { user: { email, password } };
+        try {
+            let res = await axios.post(SERVER + "/api/tokens", payload);
+            let token = res.data.token.encoded;
+
+            farmbotAPI = axios.create({
+                baseURL: "https://my.farm.bot/api",
+                timeout: 2000,
+                headers: {
+                    Authorization: token,
+                },
+            });
+        } catch (error) {
+            console.error("Erreur lors de la récupération du token", error);
+        }
+    },
     /**
      * Renvoit toutes les données du capteur d'humidité
      */
@@ -61,7 +70,6 @@ const toExport = {
      */
     getTools: async () => {
         let res = await farmbotAPI.get("/tools");
-        console.log(res.data);
         return res.data;
     },
 };

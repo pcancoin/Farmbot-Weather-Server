@@ -1,13 +1,25 @@
-const Settings = require("../models/Settings");
+const Settings = require("../models/Settings"),
+    farmbotApi = require("../services/farmbotApi");
 
 const toExport = {
     initSettings: async () => {
+        let getWateringID = async () => {
+            let tools = await farmbotApi.getTools()
+            for({name,id} of tools) {
+                if(name === "Watering Nozzle"){
+                    console.log(id);
+                    return id;
+                }
+            }
+            return null;
+        } ;
+
         try {
             let settings = await Settings.findOne({}, { _id: 0 });
             if (settings === null) {
                 
                 await Settings.create({
-                    toolID: 0,
+                    toolID: await getWateringID(),
                     valvePin: 0,
                     wateringThreshold: 0.5,
                     weatherThreshold: 0,

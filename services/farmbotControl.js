@@ -20,22 +20,6 @@ const toExport = {
         try {
             let res = await axios.post(SERVER + "/api/tokens", payload);
             let token = res.data.token.encoded;
-            console.log(token);
-
-            let tokenObjet = {
-                name: "Farmbot",
-                token: token,
-            };
-
-            let tokenStocke = await Token.findOne({ name: "Farmbot" });
-
-            if (tokenStocke === null) {
-                await Token.create(tokenObjet);
-                console.log("Token farmbot ajouté");
-            } else {
-                Token.findOneAndUpdate({ name: "Farmbot" }, tokenObjet);
-                console.log("Token mis à jour");
-            }
 
             farmbot = new Farmbot({ token });
 

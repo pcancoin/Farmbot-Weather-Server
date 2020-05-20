@@ -9,7 +9,8 @@ const express = require("express"),
     passport = require("passport"),
     cookieSession = require("cookie-session"),
     reglagesServices = require("./services/settings"),
-    farmbotControl = require("./services/farmbotControl");
+    farmbotControl = require("./services/farmbotControl"),
+    farmbotApi = require("./services/farmbotApi");
 
 mongoose
     .connect(process.env.mongodb, {
@@ -17,15 +18,19 @@ mongoose
         useUnifiedTopology: true,
         useFindAndModify: false,
     })
-    .then(() => {
+    .then(async () => {
         console.log("Connected to MongoDB");
+        await farmbotApi.initToken(
+            process.env.farmbotMail,
+            process.env.farmbotPassword);
+        await farmbotControl.retrieveTokenAndConnect(
+            process.env.farmbotMail,
+            process.env.farmbotPassword
+        );
         reglagesServices.initSettings();
     });
 
-farmbotControl.retrieveTokenAndConnect(
-    process.env.farmbotMail,
-    process.env.farmbotPassword
-);
+
 
 require("./services/passport");
 
