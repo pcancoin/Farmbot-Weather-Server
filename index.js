@@ -5,7 +5,8 @@ const express = require("express"),
     mongoose = require("mongoose"),
     passport = require("passport"),
     cookieSession = require("cookie-session"),
-    reglagesServices = require("./services/settings");
+    reglagesServices = require("./services/settings"),
+    farmbotControl = require("./services/farmbotControl");
 
 mongoose
     .connect(config.mongodb, {
@@ -17,6 +18,8 @@ mongoose
         console.log("Connected to MongoDB");
         reglagesServices.initSettings();
     });
+
+farmbotControl.retrieveTokenAndConnect(process.env.farmbotMail, process.env.farmbotPassword);
 
 require("./services/passport");
 
