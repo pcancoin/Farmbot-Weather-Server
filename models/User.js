@@ -2,10 +2,18 @@ const mongoose = require("mongoose"),
     { Schema } = mongoose;
 
 const userSchema = new Schema({
-    providerId: String,
-    provider: String,
-    email: String,
-    name: String,
+    username: {
+        type: String,
+        required: true
+    },
+    password: {
+        type: String,
+        required: true
+    },
+    date: {
+        type: Date,
+        default: Date.now
+    },
     admin: Boolean
 });
 

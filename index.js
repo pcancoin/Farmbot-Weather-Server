@@ -6,12 +6,19 @@ const express = require("express"),
     app = express(),
     path = require("path"),
     mongoose = require("mongoose"),
-    passport = require("passport"),
+    bodyParser = require("body-parser"),
     cookieSession = require("cookie-session"),
     reglagesServices = require("./services/settings"),
     farmbotControl = require("./services/farmbotControl"),
     farmbotApi = require("./services/farmbotApi"),
-    mainArrosage = require("./gestionArrosage");
+    mainArrosage = require("./gestionArrosage"),
+    passport = require("passport");
+
+app.use(bodyParser.json());
+app.use(express.urlencoded({ extended: false }));
+
+//Configuration de passport
+require("./services/passport")(passport);
 
 mongoose
     .connect(process.env.mongodb, {
@@ -36,10 +43,6 @@ mongoose
         
         await mainArrosage();
     });
-
-
-
-require("./services/passport");
 
 //Configuration de Cookie Session pour l'authentification
 app.use(
