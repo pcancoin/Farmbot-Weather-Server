@@ -18,17 +18,25 @@ const toExport = {
     retrieveTokenAndConnect: async (email, password) => {
         const payload = { user: { email, password } };
         try {
-            console.log("Recup du token pour FarmbotJS");
+            console.log("Recuperation du token pour FarmbotJS...");
             
             let res = await axios.post(SERVER + "/api/tokens", payload);
             let token = res.data.token.encoded;
-
+            console.log("Token récupéré :", token);
+            
+            console.log("Connexion au Farmbot avec FarmbotJS...");
+            
             farmbot = new Farmbot({ token });
 
-            await farmbot.connect();
+            try {
+                await farmbot.connect();
+            } catch (error) {
+                console.error("Erreur lors de la connexion avec FarmbotJS :", error);
+            }
+            
             console.log("Connecté au Farmbot !");
         } catch (error) {
-            console.error("Erreur lors de la récupération du token", error);
+            console.error("Erreur lors de la récupération du token cote FarmbotJS", error);
         }
     },
     /**

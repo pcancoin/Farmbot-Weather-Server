@@ -12,20 +12,20 @@ const toExport = {
     initToken: async (email, password) => {
         const payload = { user: { email, password } };
         try {
-            console.log("Récuperationdu token...");
+            console.log("Récuperationdu token pour l'API...");
             
             let res = await axios.post(SERVER + "/api/tokens", payload);
             let token = res.data.token.encoded;
 
             farmbotAPI = axios.create({
-                baseURL: "https://my.farm.bot/api",
+                baseURL: SERVER,
                 timeout: 2000,
                 headers: {
                     Authorization: token,
                 },
             });
         } catch (error) {
-            console.error("Erreur lors de la récupération du token", error);
+            console.error("Erreur lors de la récupération du token cote API", error);
         }
     },
     /**
