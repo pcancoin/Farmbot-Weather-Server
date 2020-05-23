@@ -6,11 +6,14 @@ const express = require("express"),
     app = express(),
     path = require("path"),
     mongoose = require("mongoose"),
-    passport = require("passport"),
+    bodyParser = require("body-parser"),
     cookieSession = require("cookie-session"),
     reglagesServices = require("./services/settings"),
     farmbotControl = require("./services/farmbotControl"),
     farmbotApi = require("./services/farmbotApi");
+
+app.use(bodyParser.json());
+app.use(express.urlencoded({ extended: false }));
 
 mongoose
     .connect(process.env.mongodb, {
@@ -41,9 +44,6 @@ app.use(
         keys: [process.env.cookieKey],
     })
 );
-
-app.use(passport.initialize());
-app.use(passport.session());
 
 const authRoutes = require("./routes/authRoutes"),
     darkskyRoutes = require("./routes/darksky"),
