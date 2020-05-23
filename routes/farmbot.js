@@ -1,6 +1,7 @@
 const express = require("express"),
     router = express.Router(),
-    farmbotApi = require("../services/farmbotApi");
+    farmbotApi = require("../services/farmbotApi"),
+    settingsService = require("../services/settings");
 
 Date.prototype.getLabel = function () {
     return (
@@ -15,7 +16,8 @@ Date.prototype.getLabel = function () {
 };
 
 router.get("/", async (req, res) => {
-    let data = await farmbotApi.getSensorReadings();
+    let set = await settingsService.getSettings();
+    let data = await farmbotApi.getSensorReadings(set.sensorPin);
 
     soilReadings = data
         .splice(0, 25) //Garder les 25 dernières mesures

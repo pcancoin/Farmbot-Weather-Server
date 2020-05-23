@@ -91,7 +91,7 @@ async function readAndGetSensor(sensorPin) {
 }
 
 /**
- * Renvoit Vrai si le taux d'humidité du sol est inférieur à 50% (donc les plantes doivent être arrosées)
+ * Renvoit Vrai si le taux d'humidité du sol est inférieur au seuil (initialisé à 0.5 dans les réglages) (donc les plantes doivent être arrosées)
  */
 async function isUnderHumidityThreshold(threshold,sensorPin) {
     let sensor = await readAndGetSensor(sensorPin);
@@ -104,22 +104,25 @@ async function isUnderHumidityThreshold(threshold,sensorPin) {
 }
 
 module.exports = async function main() {
-    let set = await settingsService.getSettings();
-    console.log(set);
-    
-    
+
     /*
-    await getTime(1,3).then((time) => {
+    let set = await settingsService.getSettings();
+
+    if(isUnderHumidityThreshold(set.humidityThreshold,set.sensorPin)){
+        let waterQuantity = await howMuchWatering(set.waterNeed);
+        console.log(waterQuantity);
+        let time = await getTime(1,waterQuantity);
         console.log(time);
-        return parcours().then((plantes) => {
-            console.log(plantes);
-            return farmbotControl.goToPlant(plantes[2]).then(() => {
-                console.log("at plant");
-                farmbotControl.water(time).then(() => {
-                    console.log("done");
-                });
-            });
-        });
-    });
+        let parc = await parcours();
+        console.log(parc);
+        
+        await farmbotControl.mountWateringNozzle(set.toolID,set.sequenceMountToolID);
+        for(let i=0; i<parc.length; i++){
+            await farmbotControl.goToPlant(parc[i]);
+            await farmbotControl.water(time,set.valvePin);
+        }
+        await farmbotControl.unmountWateringNozzle(set.toolID,set.sequenceUnmountToolID);
+        
+    }
     */
 };

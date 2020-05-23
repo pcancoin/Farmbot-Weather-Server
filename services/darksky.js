@@ -1,4 +1,5 @@
-const axios = require("axios");
+const axios = require("axios"),
+    settingsService = require("../services/settings");
 
 let darkskyApi = axios.create({
     baseURL: "https://api.darksky.net/forecast/" + process.env.darkskyKey,
@@ -10,8 +11,9 @@ const toExport = {
      * Retourne toutes les prévisions de Darksky sous forme d'objet
      */
     getAllForecast: async () => {
+        let set = await settingsService.getSettings();
         let res = await darkskyApi.get(
-            "/48.1214379,-1.635091?lang=fr&units=si"
+            "/"+set.lat+","+set.long+"?lang=fr&units=si"
         );
 
         return res.data;
