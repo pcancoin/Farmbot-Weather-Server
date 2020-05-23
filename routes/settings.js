@@ -3,7 +3,9 @@ const express = require("express"),
     settingsService = require("../services/settings"),
     only = require("only");
 
-router.get("/", async (req, res) => {
+const requireAdmin = require("../middlewares/requireAdmin");
+
+router.get("/", requireAdmin, async (req, res) => {
     try {
         let settings = await settingsService.getSettings();
 
@@ -13,7 +15,7 @@ router.get("/", async (req, res) => {
     }
 });
 
-router.post("/", async (req, res) => {
+router.post("/", requireAdmin, async (req, res) => {
     let reglages = req.body;
     console.log(req.body);
     reglages = only(

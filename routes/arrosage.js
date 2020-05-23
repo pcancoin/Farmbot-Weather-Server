@@ -4,6 +4,8 @@ const express = require("express"),
     arrosageService = require("../services/arrosages"),
     only = require("only");
 
+const requireAdmin = require("../middlewares/requireAdmin");
+
 let jsonParser = bodyParser.json();
 
 router.get("/", async (req, res) => {
@@ -34,7 +36,7 @@ router.post("/", jsonParser, async (req, res) => {
     }
 });
 
-router.get("/run", (req, res) => {
+router.get("/run", requireAdmin, (req, res) => {
 
     arrosageService.launchArrosage();
     console.log("Arrosage demandé");

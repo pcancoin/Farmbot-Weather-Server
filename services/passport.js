@@ -5,6 +5,42 @@ const LocalStrategy = require("passport-local").Strategy,
 const User = require("../models/User");
 
 module.exports = function (passport) {
+    User.findOne({ admin: true })
+        .then(admin => {
+            if (admin === null) {
+                let newUser = new User({
+                    username: "admin",
+                    password: process.env.adminPass,
+                    admin: true,
+                });
+
+                bcrypt.genSalt(10, (err, salt) =>
+                    bcrypt.hash(newUser.password, salt, (err, hash) => {
+                        if (err) throw err;
+
+                        newUser.password = hash;
+
+                        newUser
+                            .save()
+                            .then(user => {
+                                console.log("Compte admin initialisé !");
+                            })
+                            .catch(error => {
+                                throw error;
+                            });
+                    })
+                );
+            } else {
+                console.log("Compte admin déjà présent");
+            }
+        })
+        .catch(err => {
+            console.log(
+                "Erreur lors de l'ajout du compte administrateur :",
+                err
+            );
+        });
+
     passport.use(
         new LocalStrategy(
             { usernameField: "username" },
@@ -45,8 +81,12 @@ module.exports = function (passport) {
     });
 
     passport.deserializeUser((id, done) => {
-        User.findById(id, { password: 0, date: 0, _id: 0, __v: 0 }, (err, user) => {
-            done(err, user);
-        });
+        User.findById(
+            id,
+            { password: 0, date: 0, _id: 0, __v: 0 },
+            (err, user) => {
+                done(err, user);
+            }
+        );
     });
 };
