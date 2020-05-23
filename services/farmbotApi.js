@@ -18,7 +18,7 @@ const toExport = {
             let token = res.data.token.encoded;
 
             farmbotAPI = axios.create({
-                baseURL: SERVER,
+                baseURL: SERVER + "/api",
                 timeout: 2000,
                 headers: {
                     Authorization: token,
