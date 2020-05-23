@@ -28,20 +28,23 @@ mongoose
     })
     .then(async () => {
         console.log("Connected to MongoDB");
-        
+
         await farmbotApi.initToken(
             process.env.farmbotMail,
             process.env.farmbotPassword
         );
-            
+
         await farmbotControl.retrieveTokenAndConnect(
             process.env.farmbotMail,
             process.env.farmbotPassword
         );
-        
-        await reglagesServices.initSettings();      
-        
+
+        await reglagesServices.initSettings();
+
         await mainArrosage();
+    })
+    .catch(err => {
+        console.error("Impossible de se connecter à la base de donnée :", err);
     });
 
 //Configuration de Cookie Session pour l'authentification
@@ -84,7 +87,6 @@ app.use(function (err, req, res, next) {
 });
 
 const PORT = 5000;
-
 
 app.listen(PORT, () => {
     console.log("App listening on port " + PORT);
