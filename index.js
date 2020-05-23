@@ -10,10 +10,14 @@ const express = require("express"),
     cookieSession = require("cookie-session"),
     reglagesServices = require("./services/settings"),
     farmbotControl = require("./services/farmbotControl"),
-    farmbotApi = require("./services/farmbotApi");
+    farmbotApi = require("./services/farmbotApi"),
+    passport = require("passport");
 
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: false }));
+
+//Configuration de passport
+require("./services/passport")(passport);
 
 mongoose
     .connect(process.env.mongodb, {
@@ -25,17 +29,14 @@ mongoose
         console.log("Connected to MongoDB");
         await farmbotApi.initToken(
             process.env.farmbotMail,
-            process.env.farmbotPassword);
+            process.env.farmbotPassword
+        );
         await farmbotControl.retrieveTokenAndConnect(
             process.env.farmbotMail,
             process.env.farmbotPassword
         );
         reglagesServices.initSettings();
     });
-
-
-
-require("./services/passport");
 
 //Configuration de Cookie Session pour l'authentification
 app.use(
@@ -44,6 +45,9 @@ app.use(
         keys: [process.env.cookieKey],
     })
 );
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 const authRoutes = require("./routes/authRoutes"),
     darkskyRoutes = require("./routes/darksky"),
