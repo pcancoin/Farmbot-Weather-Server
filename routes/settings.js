@@ -1,10 +1,7 @@
 const express = require("express"),
     router = express.Router(),
-    bodyParser = require("body-parser"),
     settingsService = require("../services/settings"),
     only = require("only");
-
-let jsonParser = bodyParser.json();
 
 router.get("/", async (req, res) => {
     try {
@@ -16,13 +13,13 @@ router.get("/", async (req, res) => {
     }
 });
 
-router.post("/", jsonParser, async (req, res) => {
+router.post("/", async (req, res) => {
     let reglages = req.body;
     console.log(req.body);
     reglages = only(
         reglages,
-        "toolID valvePin wateringThreshold weatherThreshold sensorPin lat long"
-    );
+        "toolID valvePin waterNeed humidityThreshold sensorPin lat long sequenceMountToolID sequenceUnmountToolID"
+    ); 
 
     try {
         let nouveauReglages = await settingsService.setSettings(reglages);
