@@ -1,6 +1,9 @@
 const axios = require("axios"),
     Token = require("../models/Token");
 
+    
+let settingsService = require("./settings");
+
 let farmbotAPI; 
 
 const SERVER = process.env.serverUrl;
@@ -9,6 +12,8 @@ const toExport = {
     initToken: async (email, password) => {
         const payload = { user: { email, password } };
         try {
+            console.log("Récuperationdu token...");
+            
             let res = await axios.post(SERVER + "/api/tokens", payload);
             let token = res.data.token.encoded;
 
@@ -26,19 +31,19 @@ const toExport = {
     /**
      * Renvoit toutes les données du capteur d'humidité
      */
-    getSensorReadings: async () => {
+    getSensorReadings: async (sensorPin) => {
         let res = await farmbotAPI.get("/sensor_readings");
-
+        
         //Garder uniquement les mesures du capteurs d'humidité
-        let data = res.data.filter((reading) => reading["pin"] === 59);
+        let data = res.data.filter((reading) => reading["pin"] === sensorPin);
         return data;
     },
 
     /**
      * Renvoit la dernière donnée du capteur d'humidité
      */
-    getLastSensorReading: async () => {
-        let data = await toExport.getSensorReadings();
+    getLastSensorReading: async (sensorPin) => {
+        let data = await toExport.getSensorReadings(sensorPin);
         return data[data.length - 1].value;
     },
 
@@ -61,9 +66,28 @@ const toExport = {
      */
     getSequences: async () => {
         let res = await farmbotAPI.get("/sequences");
-        console.log(res.data);
         return res.data;
     },
+
+    getMountToolID: async () => {
+        let sequences = await toExport.getSequences()
+        for({name,id} of sequences) {
+            if(name === "Mount tool"){
+                return id;
+            }
+        }
+        return null;
+    },    
+
+    getUnmountToolID: async () => {
+        let sequences = await toExport.getSequences()
+        for({name,id} of sequences) {
+            if(name === "Unmount tool"){
+                return id;
+            }
+        }
+        return null;
+    },    
 
     /**
      * Renvoit la liste des outils

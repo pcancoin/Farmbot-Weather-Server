@@ -1,3 +1,3 @@
-const main = require("./gestionArrosage/");
+const main = require("./gestionArrosage");
 
 main();

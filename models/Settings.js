@@ -3,6 +3,8 @@ const mongoose = require("mongoose"),
 
 const settingsSchema = new Schema({
     toolID: Number,
+    sequenceMountToolID: Number,
+    sequenceUnmountToolID: Number,
     sensorPin: Number,
     valvePin: Number,
     humidityThreshold: Number,

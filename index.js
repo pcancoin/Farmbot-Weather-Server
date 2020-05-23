@@ -10,7 +10,8 @@ const express = require("express"),
     cookieSession = require("cookie-session"),
     reglagesServices = require("./services/settings"),
     farmbotControl = require("./services/farmbotControl"),
-    farmbotApi = require("./services/farmbotApi");
+    farmbotApi = require("./services/farmbotApi"),
+    mainArrosage = require("./gestionArrosage");
 
 mongoose
     .connect(process.env.mongodb, {
@@ -20,14 +21,20 @@ mongoose
     })
     .then(async () => {
         console.log("Connected to MongoDB");
+        
         await farmbotApi.initToken(
             process.env.farmbotMail,
-            process.env.farmbotPassword);
+            process.env.farmbotPassword
+        );
+            
         await farmbotControl.retrieveTokenAndConnect(
             process.env.farmbotMail,
             process.env.farmbotPassword
         );
-        reglagesServices.initSettings();
+        
+        await reglagesServices.initSettings();      
+        
+        await mainArrosage();
     });
 
 
@@ -74,6 +81,7 @@ app.use(function (err, req, res, next) {
 });
 
 const PORT = 5000;
+
 
 app.listen(PORT, () => {
     console.log("App listening on port " + PORT);

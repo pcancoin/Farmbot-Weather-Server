@@ -1,6 +1,7 @@
 const farmbotApi = require("../services/farmbotApi"),
     darksky = require("../services/darksky"),
-    farmbotControl = require("../services/farmbotControl");
+    farmbotControl = require("../services/farmbotControl"),
+    settingsService = require("../services/settings");
 
 /**
  * Calcule la distance entre 2 points de coordonnées (x,y) et (i,j)
@@ -83,19 +84,19 @@ async function getTime(mmPerSec, need) {
 /**
  * Lit la valeur du capteur d'humidité puis renvoit cette valeur
  */
-async function readAndGetSensor() {
-    await farmbotControl.readSoilSensor();
-    let res = await farmbotApi.getLastSensorReading();
+async function readAndGetSensor(sensorPin) {
+    await farmbotControl.readSoilSensor(sensorPin);
+    let res = await farmbotApi.getLastSensorReading(sensorPin);
     return res;
 }
 
 /**
  * Renvoit Vrai si le taux d'humidité du sol est inférieur à 50% (donc les plantes doivent être arrosées)
  */
-async function isUnder50Percent() {
-    let sensor = await readAndGetSensor();
+async function isUnderHumidityThreshold(threshold,sensorPin) {
+    let sensor = await readAndGetSensor(sensorPin);
     let res = 1 - (sensor * 100) / 1023;
-    if (res < 0.5) {
+    if (res < threshold) {
         return true;
     } else {
         return false;
@@ -103,6 +104,10 @@ async function isUnder50Percent() {
 }
 
 module.exports = async function main() {
+    let set = await settingsService.getSettings();
+    console.log(set);
+    
+    
     /*
     await getTime(1,3).then((time) => {
         console.log(time);

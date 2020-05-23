@@ -3,6 +3,7 @@ const Settings = require("../models/Settings"),
 
 const toExport = {
     initSettings: async () => {
+        console.log("Initialisation des réglages ...");
         
         try {
             let settings = await Settings.findOne({}, { _id: 0 });
@@ -10,6 +11,8 @@ const toExport = {
                 
                 await Settings.create({
                     toolID: await farmbotApi.getWateringID(),
+                    sequenceMountToolID: await farmbotApi.getMountToolID(),
+                    sequenceUnmountToolID: await farmbotApi.getUnmountToolID(),
                     valvePin: await farmbotApi.getValvePin(),
                     humidityThreshold: 0.5,
                     waterNeed: 1.071, //mm d'eau pour un radis
@@ -30,10 +33,13 @@ const toExport = {
             throw new Error("Erreur lors de l'initialisation des réglages");
         }
     },
-
-    getSettings: async () => {
+    /**
+     * Récupération des réglages
+     */
+    getSettings: async () => {        
         try {
             let settings = await Settings.findOne({}, { _id: 0 });
+            
             return settings;
         } catch (err) {
             console.log("Erreur récupération réglages : ", err);

@@ -18,12 +18,15 @@ const toExport = {
     retrieveTokenAndConnect: async (email, password) => {
         const payload = { user: { email, password } };
         try {
+            console.log("Recup du token pour FarmbotJS");
+            
             let res = await axios.post(SERVER + "/api/tokens", payload);
             let token = res.data.token.encoded;
 
             farmbot = new Farmbot({ token });
 
-            farmbot.connect().then(() => console.log("Connecté au Farmbot !"));
+            await farmbot.connect();
+            console.log("Connecté au Farmbot !");
         } catch (error) {
             console.error("Erreur lors de la récupération du token", error);
         }
@@ -47,19 +50,19 @@ const toExport = {
     /**
      * Allume l'electrovanne pendant le temps (en ms) défini en paramètre
      */
-    water: (time) => {
-        farmbot.writePin({ pin_number: 8, pin_mode: 0, pin_value: 1 });
+    water: (time,waterPin) => {
+        farmbot.writePin({ pin_number: waterPin, pin_mode: 0, pin_value: 1 });
         function stopWater() {
-            farmbot.writePin({ pin_number: 8, pin_mode: 0, pin_value: 0 });
+            farmbot.writePin({ pin_number: waterPin, pin_mode: 0, pin_value: 0 });
         }
         setTimeout(stopWater, time);
     },
     /**
      * Lit la valeur du capteur d'humidité
      */
-    readSoilSensor: () => {
+    readSoilSensor: (sensorPin) => {
         farmbot
-            .readPin({ pin_number: 59, pin_mode: 0 })
+            .readPin({ pin_number: sensorPin, pin_mode: 0 })
             .catch(function (erreur) {
                 console.log(erreur);
             });
@@ -68,14 +71,14 @@ const toExport = {
      * Lance la séquence mount tool avec l'outil tamis pour arroser
      * id de l'outil watering nozzle : 7043
      */
-    mountWateringNozzle: () => {
+    mountWateringNozzle: (wateringToolID,sequenceID) => {
         console.log("about to be mounted");
-        farmbot.execSequence(24863, [
+        farmbot.execSequence(sequenceID, [
             {
                 kind: "parameter_application",
                 args: {
                     label: "parent",
-                    data_value: { kind: "tool", args: { tool_id: 7770 } }, //id 7770 pour ne pas faire tomber un outil qui existe lors des tests
+                    data_value: { kind: "tool", args: { tool_id: wateringToolID } },
                 },
             },
         ]);
@@ -84,13 +87,13 @@ const toExport = {
     /**
      * Lance la séquence unmount tool avec l'outil tamis pour arroser
      */
-    unmountWateringNozzle: () => {
-        farmbot.execSequence(24867, [
+    unmountWateringNozzle: (wateringToolID, sequenceID) => {
+        farmbot.execSequence(sequenceID, [
             {
                 kind: "parameter_application",
                 args: {
                     label: "parent",
-                    data_value: { kind: "tool", args: { tool_id: 7770 } }, //idem que pour mountWateringNozzle
+                    data_value: { kind: "tool", args: { tool_id: wateringToolID } }, 
                 },
             },
         ]);
