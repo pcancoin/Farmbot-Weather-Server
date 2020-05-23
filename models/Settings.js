@@ -5,8 +5,8 @@ const settingsSchema = new Schema({
     toolID: Number,
     sensorPin: Number,
     valvePin: Number,
-    wateringThreshold: Number,
-    weatherThreshold: Number,
+    humidityThreshold: Number,
+    waterNeed: Number,
     lat: Number,
     long: Number
 });

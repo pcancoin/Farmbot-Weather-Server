@@ -53,7 +53,7 @@ async function parcours() {
 /**
  * Renvoit (besoin en eau) - (addition des précipitations des 12 prochaines heures)
  * C'est-à-dire combien de mm d'eau il faut arroser
- * @param {besoin en eau d'une plante} need
+ * @param {besoin en eau d'une plante en mm} need
  */
 async function howMuchWatering(need) {
     var tab = await darksky.precipIntensityProba();
@@ -72,12 +72,12 @@ async function howMuchWatering(need) {
 /**
  * Renvoit le temps d'arrosage nécessaire pour une plante
  * @param {mm d'eau par seconde de notre pompe} mmPerSec
- * @param {besoin en eau en ml d'une plante} need
+ * @param {besoin en eau en mm d'une plante} need
  */
 async function getTime(mmPerSec, need) {
-    var water = await howMuchWatering(need);
-    var res = water / mmPerSec;
-    return res;
+    let water = await howMuchWatering(need);
+    let time = water / mmPerSec;
+    return time;
 }
 
 /**

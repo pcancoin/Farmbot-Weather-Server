@@ -29,17 +29,6 @@ const toExport = {
         }
     },
     /**
-     * Etablit la connexion avec le farmbot
-     */
-    start: () => {
-        farmbot
-            .connect()
-            .then(() => {
-                console.log("CONNECTED TO FARMBOT!");
-            })
-            .catch(errorHandler);
-    },
-    /**
      * Positionne le robot en (x,y,z)
      */
     goTo: (x, y, z) => {

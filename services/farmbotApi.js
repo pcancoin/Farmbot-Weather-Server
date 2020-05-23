@@ -72,6 +72,39 @@ const toExport = {
         let res = await farmbotAPI.get("/tools");
         return res.data;
     },
+    /**
+     * Renvoit l'id de l'outil Watering Nozzle
+     */
+    getWateringID: async () => {
+        let tools = await toExport.getTools()
+        for({name,id} of tools) {
+            if(name === "Watering Nozzle"){
+                return id;
+            }
+        }
+        return null;
+    },
+    /**
+     * Renvoit le pin de l'électrovanne
+     */
+    getValvePin: async () => {
+        let pins = await farmbotAPI.get("/peripherals");
+        for({label,pin} of pins.data){
+            if(label === "Water / electrovanne"){
+                return pin;
+            }
+        }
+        return null;
+    },
+    getSensorPin: async () => {
+        let sensors = await farmbotAPI.get("/sensors");
+        for({label,pin} of sensors.data){
+            if(label === "Soil Sensor"){
+                return pin;
+            }
+        }
+        return null;
+    }
 };
 
 module.exports = toExport;
