@@ -9,11 +9,6 @@ let farmbot = undefined;
 
 const SERVER = process.env.serverUrl;
 
-const errorHandler = (error) => {
-    console.log("=== ERROR ===");
-    console.dir(error);
-};
-
 const toExport = {
     retrieveTokenAndConnect: async (email, password) => {
         const payload = { user: { email, password } };
