@@ -2,6 +2,9 @@ const Settings = require("../models/Settings"),
     farmbotApi = require("../services/farmbotApi");
 
 const toExport = {
+    /**
+     * Initialisation des réglages
+     */
     initSettings: async () => {
         console.log("Initialisation des réglages ...");
         
@@ -47,7 +50,10 @@ const toExport = {
             throw new Error("Erreur lors de la récupération des réglages");
         }
     },
-
+    /**
+     * Modification des réglages
+     * @param {nouveaux réglages} reglages
+     */
     setSettings: async reglages => {
         try {
             let nouveauReglages = await Settings.findOneAndUpdate(

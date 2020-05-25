@@ -5,6 +5,10 @@ const farmbotApi = require("../services/farmbotApi"),
 
 /**
  * Calcule la distance entre 2 points de coordonnées (x,y) et (i,j)
+ * @param {coordonnée sur l'axe x du premier point} x
+ * @param {coordonnée sur l'axe y du premier point} y
+ * @param {coordonnée sur l'axe x du deuxième point} i
+ * @param {coordonnée sur l'axe y du deuxième point} j
  */
 function distance(x, y, i, j) {
     var res = Math.sqrt((x - i) * (x - i) + (y - j) * (y - j));
@@ -13,8 +17,8 @@ function distance(x, y, i, j) {
 
 /**
  * Renvoit la case du tableau plantes contenant la plante la plus proche du point de coordonnées (x,y)
- * @param {coordonnée x} x
- * @param {coordonnée y} y
+ * @param {coordonnée sur l'axe x} x
+ * @param {coordonnée sur l'axe y} y
  * @param {tableau de plantes} plantes
  */
 function distanceMin(x, y, plantes) {
@@ -53,7 +57,7 @@ async function parcours() {
 
 /**
  * Renvoit (besoin en eau) - (addition des précipitations des 12 prochaines heures)
- * C'est-à-dire combien de mm d'eau il faut arroser
+ * C'est-à-dire combien de mm d'eau il reste à arroser
  * @param {besoin en eau d'une plante en mm} need
  */
 async function howMuchWatering(need) {
@@ -72,7 +76,7 @@ async function howMuchWatering(need) {
 
 /**
  * Renvoit le temps d'arrosage nécessaire pour une plante
- * @param {mm d'eau par seconde de notre pompe} mmPerSec
+ * @param {mm d'eau par seconde de fournis par l'electrovanne} mmPerSec
  * @param {besoin en eau en mm d'une plante} need
  */
 async function getTime(mmPerSec, need) {
@@ -83,6 +87,7 @@ async function getTime(mmPerSec, need) {
 
 /**
  * Lit la valeur du capteur d'humidité puis renvoit cette valeur
+ * @param {pin du capteur d'humidité} sensorPin
  */
 async function readAndGetSensor(sensorPin) {
     await farmbotControl.readSoilSensor(sensorPin);
@@ -91,7 +96,9 @@ async function readAndGetSensor(sensorPin) {
 }
 
 /**
- * Renvoit Vrai si le taux d'humidité du sol est inférieur au seuil (initialisé à 0.5 dans les réglages) (donc les plantes doivent être arrosées)
+ * Renvoit Vrai si le taux d'humidité du sol est inférieur au seuil (initialisé à 0.5 dans les réglages)
+ * @param {seuil d'humidité défini dans les réglages} threshold
+ * @param {pin du capteur d'humidité} sensorPin
  */
 async function isUnderHumidityThreshold(threshold,sensorPin) {
     let sensor = await readAndGetSensor(sensorPin);

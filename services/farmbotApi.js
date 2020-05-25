@@ -9,10 +9,15 @@ let farmbotAPI;
 const SERVER = process.env.serverUrl;
 
 const toExport = {
+    /**
+     * Récupère le token associé au compte FarmBot et crée la requête pré-paramétrée farmbotAPI
+     * @param {email du compte FarmBot} email
+     * @param {mot de passe du compte FarmBot} password
+     */
     initToken: async (email, password) => {
         const payload = { user: { email, password } };
         try {
-            console.log("Récuperationdu token pour l'API...");
+            console.log("Récuperation du token pour l'API...");
             
             let res = await axios.post(SERVER + "/api/tokens", payload);
             let token = res.data.token.encoded;
@@ -30,6 +35,7 @@ const toExport = {
     },
     /**
      * Renvoit toutes les données du capteur d'humidité
+     * @param {pin du capteur d'humidité} sensorPin
      */
     getSensorReadings: async (sensorPin) => {
         let res = await farmbotAPI.get("/sensor_readings");
@@ -40,7 +46,8 @@ const toExport = {
     },
 
     /**
-     * Renvoit la dernière donnée du capteur d'humidité
+     * Renvoit la dernière mesure du capteur d'humidité
+     * @param {pin du capteur d'humidité} sensorPin
      */
     getLastSensorReading: async (sensorPin) => {
         let data = await toExport.getSensorReadings(sensorPin);
@@ -48,7 +55,7 @@ const toExport = {
     },
 
     /**
-     * Renvoit le tableau avec toutes les plantes
+     * Renvoit le tableau de toutes les plantes enregistrées
      */
     plantArray: async () => {
         let tab = [];
@@ -68,7 +75,9 @@ const toExport = {
         let res = await farmbotAPI.get("/sequences");
         return res.data;
     },
-
+    /**
+     * Renvoit l'id de la séquence permettant de monter un outil
+     */
     getMountToolID: async () => {
         let sequences = await toExport.getSequences()
         for({name,id} of sequences) {
@@ -78,7 +87,9 @@ const toExport = {
         }
         return null;
     },    
-
+    /**
+     * Renvoit l'id de la séquence permettant de démonter un outil
+     */
     getUnmountToolID: async () => {
         let sequences = await toExport.getSequences()
         for({name,id} of sequences) {
@@ -88,7 +99,6 @@ const toExport = {
         }
         return null;
     },    
-
     /**
      * Renvoit la liste des outils
      */
@@ -97,7 +107,7 @@ const toExport = {
         return res.data;
     },
     /**
-     * Renvoit l'id de l'outil Watering Nozzle
+     * Renvoit l'id de l'outil qui permet d'arroser (Watering Nozzle)
      */
     getWateringID: async () => {
         let tools = await toExport.getTools()
@@ -120,6 +130,9 @@ const toExport = {
         }
         return null;
     },
+    /**
+     * Renvoit le pin du capteur d'humidité
+     */
     getSensorPin: async () => {
         let sensors = await farmbotAPI.get("/sensors");
         for({label,pin} of sensors.data){

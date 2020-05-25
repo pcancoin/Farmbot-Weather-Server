@@ -10,6 +10,11 @@ let farmbot = undefined;
 const SERVER = process.env.serverUrl;
 
 const toExport = {
+    /**
+     * Récupère le token associé au compte FarmBot, crée l'objet Farmbot grâce au token, puis se connecte au robot
+     * @param {email du compte FarmBot} email
+     * @param {mot de passe du compte FarmBot} password
+     */
     retrieveTokenAndConnect: async (email, password) => {
         const payload = { user: { email, password } };
         try {
@@ -36,6 +41,9 @@ const toExport = {
     },
     /**
      * Positionne le robot en (x,y,z)
+     * @param {coordonnées sur l'axe x} x
+     * @param {coordonnées sur l'axe y} y
+     * @param {coordonnées sur l'axe z} z
      */
     goTo: (x, y, z) => {
         farmbot.moveAbsolute({ x: x, y: y, z: z });
@@ -51,7 +59,9 @@ const toExport = {
         await toExport.goTo(x, y, 0);
     },
     /**
-     * Allume l'electrovanne pendant le temps (en ms) défini en paramètre
+     * Allume l'electrovanne pendant le temps défini en paramètre
+     * @param {temps d'arrosage en milisecondes} time
+     * @param {pin de l'electrovanne} waterPin
      */
     water: (time,waterPin) => {
         farmbot.writePin({ pin_number: waterPin, pin_mode: 0, pin_value: 1 });
@@ -62,6 +72,7 @@ const toExport = {
     },
     /**
      * Lit la valeur du capteur d'humidité
+     * @param {pin du capteur d'humidité} sensorPin
      */
     readSoilSensor: (sensorPin) => {
         farmbot
@@ -71,8 +82,9 @@ const toExport = {
             });
     },
     /**
-     * Lance la séquence mount tool avec l'outil tamis pour arroser
-     * id de l'outil watering nozzle : 7043
+     * Lance la séquence Mount Tool avec l'outil d'arrosage
+     * @param {id de l'outil d'arrosage} wateringToolID
+     * @param {id de la séquence permettant de monter un outil} sequenceID
      */
     mountWateringNozzle: (wateringToolID,sequenceID) => {
         console.log("about to be mounted");
@@ -88,7 +100,9 @@ const toExport = {
         console.log("mounted");
     },
     /**
-     * Lance la séquence unmount tool avec l'outil tamis pour arroser
+     * Lance la séquence Unmount Tool avec l'outil d'arrosage
+     * @param {id de l'outil d'arrosage} wateringToolID
+     * @param {id de la séquence permettant de démonter un outil} sequenceID
      */
     unmountWateringNozzle: (wateringToolID, sequenceID) => {
         farmbot.execSequence(sequenceID, [
