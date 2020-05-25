@@ -61,5 +61,5 @@ sudo docker-compose up -d
 ## Contact
 
 Pablo Cancoin - pablo.cancoin@gmail.com
-
+[contributors-shield]: https://img.shields.io/github/contributors/pcancoin/Farmbot-Weather-Server?style=flat-square
 [contributors-url]: https://github.com/pcancoin/Farmbot-Weather-Server/graphs/contributors
