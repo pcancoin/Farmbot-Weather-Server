@@ -3,11 +3,11 @@ const express = require("express"),
     darkskyAPI = require("../services/darksky");
 
 /**
- * Mapper la nombre d'une intervalle à une autre
- * @param in_min Min intervalle de départ
- * @param in_max Max intervalle de départ
- * @param out_min Min intervalle d'arrivée
- * @param out_min Max intervalle d'arrivée
+ * Mapper le nombre d'un intervalle à un autre
+ * @param {Min intervalle de départ} in_min 
+ * @param {Max intervalle de départ} in_max 
+ * @param {Min intervalle d'arrivée} out_min 
+ * @param {Max intervalle d'arrivée} out_min
  */
 Number.prototype.map = function (in_min, in_max, out_min, out_max) {
     return (

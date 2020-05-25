@@ -34,7 +34,7 @@ const toExport = {
         }
     },
     /**
-     * Renvoit toutes les données du capteur d'humidité
+     * Renvoie toutes les données du capteur d'humidité
      * @param {pin du capteur d'humidité} sensorPin
      */
     getSensorReadings: async (sensorPin) => {
@@ -46,7 +46,7 @@ const toExport = {
     },
 
     /**
-     * Renvoit la dernière mesure du capteur d'humidité
+     * Renvoie la dernière mesure du capteur d'humidité
      * @param {pin du capteur d'humidité} sensorPin
      */
     getLastSensorReading: async (sensorPin) => {
@@ -55,7 +55,7 @@ const toExport = {
     },
 
     /**
-     * Renvoit le tableau de toutes les plantes enregistrées
+     * Renvoie le tableau de toutes les plantes enregistrées
      */
     plantArray: async () => {
         let tab = [];
@@ -69,14 +69,14 @@ const toExport = {
     },
 
     /**
-     * Renvoit le tableau des séquences
+     * Renvoie le tableau des séquences
      */
     getSequences: async () => {
         let res = await farmbotAPI.get("/sequences");
         return res.data;
     },
     /**
-     * Renvoit l'id de la séquence permettant de monter un outil
+     * Renvoie l'id de la séquence permettant de monter un outil
      */
     getMountToolID: async () => {
         let sequences = await toExport.getSequences()
@@ -88,7 +88,7 @@ const toExport = {
         return null;
     },    
     /**
-     * Renvoit l'id de la séquence permettant de démonter un outil
+     * Renvoie l'id de la séquence permettant de démonter un outil
      */
     getUnmountToolID: async () => {
         let sequences = await toExport.getSequences()
@@ -100,14 +100,14 @@ const toExport = {
         return null;
     },    
     /**
-     * Renvoit la liste des outils
+     * Renvoie la liste des outils
      */
     getTools: async () => {
         let res = await farmbotAPI.get("/tools");
         return res.data;
     },
     /**
-     * Renvoit l'id de l'outil qui permet d'arroser (Watering Nozzle)
+     * Renvoie l'id de l'outil qui permet d'arroser (Watering Nozzle)
      */
     getWateringID: async () => {
         let tools = await toExport.getTools()
@@ -119,7 +119,7 @@ const toExport = {
         return null;
     },
     /**
-     * Renvoit le pin de l'électrovanne
+     * Renvoie le pin de l'électrovanne
      */
     getValvePin: async () => {
         let pins = await farmbotAPI.get("/peripherals");
@@ -131,7 +131,7 @@ const toExport = {
         return null;
     },
     /**
-     * Renvoit le pin du capteur d'humidité
+     * Renvoie le pin du capteur d'humidité
      */
     getSensorPin: async () => {
         let sensors = await farmbotAPI.get("/sensors");
