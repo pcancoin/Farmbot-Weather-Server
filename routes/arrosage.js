@@ -18,7 +18,7 @@ router.get("/", async (req, res) => {
     }
 });
 
-router.post("/", jsonParser, async (req, res) => {
+router.post("/", jsonParser, requireAdmin, async (req, res) => {
     let arrosage = req.body;
     console.log(req.body);
     arrosage = only(
