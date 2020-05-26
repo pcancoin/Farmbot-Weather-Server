@@ -1,3 +1,4 @@
+
 # Farmbot-Weather-Server
 Une interface permettant de visualiser les données météo ainsi que de gérer l'arrosage automatique du Farmbot de l'INSA Rennes
 
@@ -66,13 +67,15 @@ sudo docker-compose up -d
 ## Architecture du code
 
 
-### Différents dossiers
+<!--### Différents dossiers-->
 * *gestionArrosage/* : Contient le code principal de l'arrosage automatique, qui vérifie s'il faut arroser et donne les ordres au robot
 * *middlewares/* : Regroupe les différents [middlewares](http://expressjs.com/en/guide/using-middleware.html)
 * *models/* : Différents modèles utilisés pour le stockage de données (librairie [Mongoose](http://mongoosejs.net/))
 * *node_modules/* : Toutes les dépendances du projets, installées avec ``` npm install```
 * *routes/* :  Différentes routes ou URI que désert le serveur
 * *services/* : Différents services utilisés par le serveur web et/ou par la gestion de l'arrosage automatique
+
+* *index.js* : Fichier principal, lie le serveur à l'arrosage automatique
 
 ## Contact
 
