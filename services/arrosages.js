@@ -5,7 +5,7 @@ const toExport = {
      * Renvoie les derniers arrosages effectués
      * @param {number} limit Nombre d'arrosage max à renvoyer
      */
-    getArrosages: async (limit = 3, limite) => {
+    getArrosages: async (limit = 3) => {
         try {
             let arrosages = await Arrosage.find({}, { _id: 0 }).sort({date : -1}).limit(limit);
             return arrosages;
