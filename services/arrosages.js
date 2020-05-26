@@ -3,9 +3,9 @@ const Arrosage = require("../models/Arrosage");
 const toExport = {
     /**
      * Renvoie les derniers arrosages effectués
-     * @param {nombre d'arrosages à renvoyer} limit
+     * @param {number} limit Nombre d'arrosage max à renvoyer
      */
-    getArrosages: async (limit = 3) => {
+    getArrosages: async (limit = 3, limite) => {
         try {
             let arrosages = await Arrosage.find({}, { _id: 0 }).sort({date : -1}).limit(limit);
             return arrosages;
@@ -17,7 +17,7 @@ const toExport = {
     },
     /**
      * Crée et renvoie un nouvel arrosage à partir d'un objet arrosage
-     * @param {paramètres de l'arrosage à créer} arrosage 
+     * @param {Object} arrosage Arrosage à créer
      */
     createArrosage: async (arrosage) => {
         try {

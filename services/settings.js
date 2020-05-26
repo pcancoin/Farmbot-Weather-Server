@@ -51,8 +51,8 @@ const toExport = {
         }
     },
     /**
-     * Modification des réglages
-     * @param {nouveaux réglages} reglages
+     * Modification des réglages 
+     * @param {Object} reglages Réglages modifiés
      */
     setSettings: async reglages => {
         try {

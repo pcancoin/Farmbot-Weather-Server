@@ -10,8 +10,8 @@ const SERVER = process.env.serverUrl;
 const toExport = {
     /**
      * Récupère le token associé au compte FarmBot et crée la requête pré-paramétrée farmbotAPI
-     * @param {email du compte FarmBot} email
-     * @param {mot de passe du compte FarmBot} password
+     * @param {string} email Email du compte FarmBot
+     * @param {string} password Mot de passe du compte FarmBot
      */
     initToken: async (email, password) => {
         const payload = { user: { email, password } };
@@ -34,7 +34,7 @@ const toExport = {
     },
     /**
      * Renvoie toutes les données du capteur d'humidité
-     * @param {pin du capteur d'humidité} sensorPin
+     * @param {number} sensorPin Pin du capteur d'humidité
      */
     getSensorReadings: async (sensorPin) => {
         let res = await farmbotAPI.get("/sensor_readings");
@@ -46,7 +46,7 @@ const toExport = {
 
     /**
      * Renvoie la dernière mesure du capteur d'humidité
-     * @param {pin du capteur d'humidité} sensorPin
+     * @param {number} sensorPin Pin du capteur d'humidité
      */
     getLastSensorReading: async (sensorPin) => {
         let data = await toExport.getSensorReadings(sensorPin);

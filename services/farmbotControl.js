@@ -11,8 +11,8 @@ const SERVER = process.env.serverUrl;
 const toExport = {
     /**
      * Récupère le token associé au compte FarmBot, crée l'objet Farmbot grâce au token, puis se connecte au robot
-     * @param {email du compte FarmBot} email
-     * @param {mot de passe du compte FarmBot} password
+     * @param {string} email Email du compte FarmBot
+     * @param {string} password Mot de passe du compte FarmBot
      */
     retrieveTokenAndConnect: async (email, password) => {
         const payload = { user: { email, password } };
@@ -40,16 +40,16 @@ const toExport = {
     },
     /**
      * Positionne le robot en (x,y,z)
-     * @param {coordonnées sur l'axe x} x
-     * @param {coordonnées sur l'axe y} y
-     * @param {coordonnées sur l'axe z} z
+     * @param {number} x Coordonnées sur l'axe x
+     * @param {number} y Coordonnées sur l'axe y
+     * @param {number} z Coordonnées sur l'axe z
      */
     goTo: (x, y, z) => {
         farmbot.moveAbsolute({ x: x, y: y, z: z });
     },
     /**
      * Positionne le robot au-dessus de la ième plante
-     * @param {numéro de la plante} i
+     * @param {number} i Numéro de la plante
      */
     goToPlant: async (i) => {
         var plantes = await farmbotApi.plantArray();
@@ -59,8 +59,8 @@ const toExport = {
     },
     /**
      * Allume l'electrovanne pendant le temps défini en paramètre
-     * @param {temps d'arrosage en milisecondes} time
-     * @param {pin de l'electrovanne} waterPin
+     * @param {number} time Temps d'arrosage en milisecondes
+     * @param {number} waterPin Pin de l'electrovanne
      */
     water: (time,waterPin) => {
         farmbot.writePin({ pin_number: waterPin, pin_mode: 0, pin_value: 1 });
@@ -71,7 +71,7 @@ const toExport = {
     },
     /**
      * Lit la valeur du capteur d'humidité
-     * @param {pin du capteur d'humidité} sensorPin
+     * @param {number} sensorPin Pin du capteur d'humidité
      */
     readSoilSensor: (sensorPin) => {
         farmbot
@@ -82,8 +82,8 @@ const toExport = {
     },
     /**
      * Lance la séquence Mount Tool avec l'outil d'arrosage
-     * @param {id de l'outil d'arrosage} wateringToolID
-     * @param {id de la séquence permettant de monter un outil} sequenceID
+     * @param {number} wateringToolID Id de l'outil d'arrosage
+     * @param {number} sequenceID Id de la séquence permettant de monter un outil
      */
     mountWateringNozzle: (wateringToolID,sequenceID) => {
         console.log("about to be mounted");
@@ -100,8 +100,8 @@ const toExport = {
     },
     /**
      * Lance la séquence Unmount Tool avec l'outil d'arrosage
-     * @param {id de l'outil d'arrosage} wateringToolID
-     * @param {id de la séquence permettant de démonter un outil} sequenceID
+     * @param {number} wateringToolID Id de l'outil d'arrosage
+     * @param {number} sequenceID Id de la séquence permettant de démonter un outil
      */
     unmountWateringNozzle: (wateringToolID, sequenceID) => {
         farmbot.execSequence(sequenceID, [

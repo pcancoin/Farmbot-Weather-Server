@@ -5,10 +5,10 @@ const farmbotApi = require("../services/farmbotApi"),
 
 /**
  * Calcule la distance entre 2 points de coordonnées (x,y) et (i,j)
- * @param {coordonnée sur l'axe x du premier point} x
- * @param {coordonnée sur l'axe y du premier point} y
- * @param {coordonnée sur l'axe x du deuxième point} i
- * @param {coordonnée sur l'axe y du deuxième point} j
+ * @param {number} x Coordonnée sur l'axe x du premier point
+ * @param {number} y Coordonnée sur l'axe y du premier point
+ * @param {number} i Coordonnée sur l'axe x du deuxième point
+ * @param {number} j Coordonnée sur l'axe y du deuxième point
  */
 function distance(x, y, i, j) {
     var res = Math.sqrt((x - i) * (x - i) + (y - j) * (y - j));
@@ -17,9 +17,9 @@ function distance(x, y, i, j) {
 
 /**
  * Renvoit la case du tableau plantes contenant la plante la plus proche du point de coordonnées (x,y)
- * @param {coordonnée sur l'axe x} x
- * @param {coordonnée sur l'axe y} y
- * @param {tableau de plantes} plantes
+ * @param {number} x coordonnée sur l'axe x
+ * @param {number} y coordonnée sur l'axe y
+ * @param {Array<Object>} plantes tableau de plantes
  */
 function distanceMin(x, y, plantes) {
     var min = 3500;
@@ -58,7 +58,7 @@ async function parcours() {
 /**
  * Renvoit (besoin en eau) - (addition des précipitations des 12 prochaines heures)
  * C'est-à-dire combien de mm d'eau il reste à arroser
- * @param {besoin en eau d'une plante en mm} need
+ * @param {number} need Besoin en eau d'une plante en mm
  */
 async function howMuchWatering(need) {
     var tab = await darksky.precipIntensityProba();
@@ -76,8 +76,8 @@ async function howMuchWatering(need) {
 
 /**
  * Renvoit le temps d'arrosage nécessaire pour une plante
- * @param {mm d'eau par seconde de fournis par l'electrovanne} mmPerSec
- * @param {besoin en eau en mm d'une plante} need
+ * @param {number} mmPerSec mm d'eau par seconde de fournis par l'electrovanne
+ * @param {number} need Besoin en eau en mm d'une plante
  */
 async function getTime(mmPerSec, need) {
     let water = await howMuchWatering(need);
@@ -87,7 +87,7 @@ async function getTime(mmPerSec, need) {
 
 /**
  * Lit la valeur du capteur d'humidité puis renvoit cette valeur
- * @param {pin du capteur d'humidité} sensorPin
+ * @param {number} sensorPin Pin du capteur d'humidité
  */
 async function readAndGetSensor(sensorPin) {
     await farmbotControl.readSoilSensor(sensorPin);
@@ -97,8 +97,8 @@ async function readAndGetSensor(sensorPin) {
 
 /**
  * Renvoit Vrai si le taux d'humidité du sol est inférieur au seuil (initialisé à 0.5 dans les réglages)
- * @param {seuil d'humidité défini dans les réglages} threshold
- * @param {pin du capteur d'humidité} sensorPin
+ * @param {number} threshold Seuil d'humidité défini dans les réglages
+ * @param {number} sensorPin Pin du capteur d'humidité
  */
 async function isUnderHumidityThreshold(threshold,sensorPin) {
     let sensor = await readAndGetSensor(sensorPin);

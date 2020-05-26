@@ -4,10 +4,10 @@ const express = require("express"),
 
 /**
  * Mapper le nombre d'un intervalle à un autre
- * @param {Min intervalle de départ} in_min 
- * @param {Max intervalle de départ} in_max 
- * @param {Min intervalle d'arrivée} out_min 
- * @param {Max intervalle d'arrivée} out_min
+ * @param {number} in_min Min intervalle de départ
+ * @param {number} in_max Max intervalle de départ
+ * @param {number} out_min Min intervalle d'arrivée
+ * @param {number} out_min Max intervalle d'arrivée
  */
 Number.prototype.map = function (in_min, in_max, out_min, out_max) {
     return (
