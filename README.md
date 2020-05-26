@@ -1,4 +1,4 @@
-# Farmbot-Weather-Server
+# :partly_sunny: :seedling: Farmbot-Weather-Server :seedling: :partly_sunny:
 
 Une interface permettant de visualiser les données météo ainsi que de gérer l'arrosage automatique du Farmbot de l'INSA Rennes
 
@@ -23,10 +23,10 @@ FarmBot est un robot potager. Il permet de prendre soin des plantes à distance 
 
 Quatre étudiants en informatique en 3ème année INSA Rennes :
 
--   Juliette BONNARD
+-   Juliette BONNARD - juliette99bonnard@hotmail.fr
 -   Manuel POISSON - mpoissonmanuel@gmail.com
--   Pierre DUC-MARTIN
--   Pablo CANCOIN
+-   Pierre DUC-MARTIN - contact@pierredm.fr
+-   Pablo CANCOIN - pablo.cancoin@gmail.com
 
 :warning: **Ce repository contient uniquement le code de la partie serveur, le code client se situe ici : [Farmbot-Weather-Client](https://github.com/pcancoin/Farmbot-Weather-Client)**
 
