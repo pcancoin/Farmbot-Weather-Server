@@ -1,5 +1,4 @@
-const axios = require("axios"),
-    Token = require("../models/Token");
+const axios = require("axios");
 
     
 let settingsService = require("./settings");
