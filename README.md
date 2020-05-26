@@ -2,6 +2,8 @@
 
 Une interface permettant de visualiser les données météo ainsi que de gérer l'arrosage automatique du Farmbot de l'INSA Rennes
 
+:warning: **Ce repository contient uniquement le code de la partie serveur, le code client se situe ici : [Farmbot-Weather-Client](https://github.com/pcancoin/Farmbot-Weather-Client)**
+
 ## Table des matières
 
 -   [A propos du projet](#a-propos-du-projet)
@@ -28,8 +30,6 @@ Quatre étudiants en informatique en 3ème année INSA Rennes :
 -   Manuel POISSON - mpoissonmanuel@gmail.com
 -   Pierre DUC-MARTIN - contact@pierredm.fr
 -   Pablo CANCOIN - pablo.cancoin@gmail.com
-
-:warning: **Ce repository contient uniquement le code de la partie serveur, le code client se situe ici : [Farmbot-Weather-Client](https://github.com/pcancoin/Farmbot-Weather-Client)**
 
 ### Technologies utilisées
 
