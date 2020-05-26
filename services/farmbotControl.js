@@ -2,8 +2,7 @@ global.atob = require("atob");
 
 const farmbotApi = require("../services/farmbotApi"),
     Farmbot = require("farmbot").Farmbot,
-    axios = require("axios"),
-    Token = require("../models/Token");
+    axios = require("axios");
 
 let farmbot = undefined;
 
