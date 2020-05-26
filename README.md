@@ -5,15 +5,14 @@ Une interface permettant de visualiser les données météo ainsi que de gérer 
 ## Table des matières
 
 -   [A propos du projet](#a-propos-du-projet)
-
     -   [L'équipe](#léquipe)
     -   [Technologies utilisées](#technologies-utilisées)
-
--   [Technologies utilisées](#technologies-utilisées)
+    
 -   [Mise en place](#mise-en-place)
     -   [Prérequis](#prérequis)
     -   [Fichier environnement](#fichier-environnement)
     -   [Installation](#installation)
+    
 -   [Architecture du code](#architecture-du-code)
 -   [Contact](#contact)
 
