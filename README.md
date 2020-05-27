@@ -36,7 +36,7 @@ Quatre étudiants en informatique en 3ème année INSA Rennes :
 -   [NodeJS](https://nodejs.org/en/)
 -   [ExpressJS](https://expressjs.com/)
 -   [FarmbotJS](https://github.com/FarmBot/farmbot-js)
--   [MongoDB](<[https://www.mongodb.com/](https://www.mongodb.com/)>) avec [Mongoose](http://mongoosejs.net/)
+-   [MongoDB](https://www.mongodb.com/) avec [Mongoose](http://mongoosejs.net/)
 
 ## Mise en place
 
